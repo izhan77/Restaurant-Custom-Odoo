@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="hero_section_template" name="Hero Section" inherit_id="website.layout">
+        <!-- Remove default header -->
+        <xpath expr="//header" position="replace"/>
+
+        <!-- Main content with hero section -->
+        <xpath expr="//main" position="inside">
+            <section id="hero" class="hero-section">
+                <div class="container">
+                    <h1>Welcome to Kababjees</h1>
+                    <p>The taste of Karachi, now at your fingertips.</p>
+                    <a href="/menu" class="btn btn-primary">Order Now</a>
+                </div>
+            </section>
+        </xpath>
+
+    </template>
+</odoo>

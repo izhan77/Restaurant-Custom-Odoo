@@ -4,16 +4,50 @@
         <!-- Remove default header -->
         <xpath expr="//header" position="replace"/>
 
-        <!-- Main content with hero section -->
-        <xpath expr="//main" position="inside">
-            <section id="hero" class="hero-section">
-                <div class="container">
-                    <h1>Welcome to Kababjees</h1>
-                    <p>The taste of Karachi, now at your fingertips.</p>
-                    <a href="/menu" class="btn btn-primary">Order Now</a>
-                </div>
-            </section>
+        <!-- Set body background -->
+        <xpath expr="//body" position="attributes">
+            <attribute name="style">background-color: #f5f5f5;</attribute>
         </xpath>
 
+        <!-- Main content -->
+        <xpath expr="//main" position="inside">
+            <div class="main-container">
+
+                <!-- Hero section -->
+                <section class="hero-wrapper">
+                    <img src="/restaurant_custom/static/src/img/s10.PNG" class="hero-image" alt="Wrapper"/>
+                    <div class="payment-badge">
+                        <img src="/restaurant_custom/static/src/img/s11.png" alt="Payment Methods"/>
+                    </div>
+                </section>
+
+                <!-- Second section below hero -->
+                <!-- Menu navigation section -->
+                <section class="menu-nav-section">
+                    <div class="menu-nav-container">
+                        <div class="menu-categories">
+                            <a href="#" class="menu-category active">Starters</a>
+                            <a href="#" class="menu-category">Salads</a>
+                            <a href="#" class="menu-category">Soups</a>
+                            <a href="#" class="menu-category">Burgers</a>
+                            <a href="#" class="menu-category">Sandwiches</a>
+                            <a href="#" class="menu-category">Steaks (Beef)</a>
+                            <a href="#" class="menu-category">Steaks (Chicken)</a>
+                            <a href="#" class="menu-category">Chinese</a>
+                            <a href="#" class="menu-category">BBQ Platters</a>
+                            <a href="#" class="menu-category">Rice Dishes</a>
+                            <a href="#" class="menu-category">Seafood</a>
+                            <a href="#" class="menu-category">Desserts</a>
+                            <a href="#" class="menu-category">Beverages</a>
+                        </div>
+                        <div class="menu-search">
+                            <input type="text" placeholder="Search for dishes..."/>
+                        </div>
+                    </div>
+                </section>
+
+
+            </div>
+        </xpath>
     </template>
 </odoo>

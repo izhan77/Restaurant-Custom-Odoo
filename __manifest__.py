@@ -3,8 +3,10 @@
     'author': 'eaaxeesoft',
     'category': 'Website',
     'license': 'LGPL-3',
-    'version': '17.0.1.0.0',
+    'version': '1.0',
+    'depends': ['website'],
     'data': [
+        # 'views/assets.xml',
         'views/hero_section.xml',
     ],
     'assets': {

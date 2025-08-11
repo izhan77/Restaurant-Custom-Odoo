@@ -1,0 +1,106 @@
+.topbar-container {
+    background-color: #fff;
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Location button */
+.topbar-btn.location-btn {
+    background-color: #e31e24;
+    border-radius: 50px;
+    padding: 6px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.topbar-btn.location-btn i {
+    font-size: 16px;
+}
+
+/* Call info block */
+.call-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: inherit;
+}
+
+.call-info i {
+    font-size: 18px;
+}
+
+.call-info .sub-text {
+     color: black;
+}
+
+.location-text,
+.call-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.main-text {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.sub-text {
+    font-size: 12px;
+    font-weight: 400;
+    color: #fff; /* white text inside red button */
+}
+
+.topbar-logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.topbar-logo img {
+    height: 40px;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.topbar-right a {
+    background-color: #e31e24;
+    border-radius: 50px;
+    padding: 6px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.topbar-right i {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.menu-toggle {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}

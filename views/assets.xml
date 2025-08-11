@@ -1,11 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <template id="hero_assets" inherit_id="website.assets_frontend" name="Hero Assets">
-        <xpath expr="." position="inside">
-            <link rel="stylesheet" href="/restaurant_custom/static/src/css/hero.css"/>
-            <script type="text/javascript" src="/restaurant_custom/static/src/js/hero.js"/>
-        </xpath>
-    </template>
-</odoo>
+# This file is now empty. Asset inclusion is handled via the manifest's assets key.
 
 

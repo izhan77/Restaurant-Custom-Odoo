@@ -1,8 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <template id="hero_section_template" name="Hero Section" inherit_id="website.layout">
+    <template id="hero_section" name="Hero Section" inherit_id="website.layout">
         <!-- Remove default header -->
-        <xpath expr="//header" position="replace"/>
+        <xpath expr="//header" position="replace">
+            <div class="topbar-container">
+                <div class="container d-flex justify-content-between align-items-center position-relative">
+
+                    <!-- Left Section -->
+                    <div class="topbar-left">
+
+                        <!-- Location -->
+                        <a href="/change-location" class="topbar-btn location-btn">
+                            <i class="fa fa-map-marker-alt"></i>
+                            <div class="location-text">
+                                <span class="main-text">Change Location</span>
+                                <span class="sub-text">Abyssinia Lines</span>
+                            </div>
+                        </a>
+
+                        <!-- Call Info -->
+                        <div class="call-info">
+                            <i class="fa fa-mobile-alt text-danger"></i>
+                            <div class="call-text">
+                                <span class="main-text">Call and Order</span>
+                                <span class="sub-text"><strong> 021111666111 </strong></span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Center Logo -->
+                    <div class="topbar-logo">
+                        <a href="/">
+                            <img src="/restaurant_custom/static/src/img/logo.png" alt="Kababjees Logo"/>
+                        </a>
+                    </div>
+
+                    <!-- Right Section -->
+                    <div class="topbar-right">
+                        <a href="/complaint" class="topbar-btn">
+                            Submit Your Complaint
+                        </a>
+                        <i class="fa fa-shopping-cart"></i>
+                        <button class="menu-toggle">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </xpath>
 
         <!-- Main content with hero section -->
         <xpath expr="//main" position="inside">

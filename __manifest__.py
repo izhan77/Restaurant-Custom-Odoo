@@ -12,6 +12,7 @@
     'assets': {
         'web.assets_frontend': [
             '/restaurant_custom/static/src/css/hero.css',
+            '/restaurant_custom/static/src/css/popular_items.css',
             '/restaurant_custom/static/src/js/hero.js',
         ],
     },

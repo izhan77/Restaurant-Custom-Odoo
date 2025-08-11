@@ -5,6 +5,7 @@
     'license': 'LGPL-3',
     'version': '1.0',
     'data': [
+        # 'views/assets.xml',
         'views/hero_section.xml',
         # 'views/assets.xml',        # Removed to avoid website.assets_frontend inherit error
     ],

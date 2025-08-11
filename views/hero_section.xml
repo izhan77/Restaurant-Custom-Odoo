@@ -134,6 +134,86 @@
                     </div>
                 </div>
 
+                <!-- Bottom Cart Bar (NEW) -->
+                <div class="bottom-cart-bar" style="display: none;">
+                    <div class="bottom-cart-content">
+                        <div class="bottom-cart-left">
+                            <div class="cart-badge">
+                                <span class="cart-count">1</span>
+                            </div>
+                            <button class="view-cart-btn">View Cart</button>
+                        </div>
+                        <div class="bottom-cart-right">
+                            <span class="cart-total">Rs. 1954</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cart Sidebar (NEW) -->
+                <div class="cart-sidebar" style="display: none;">
+                    <div class="cart-sidebar-overlay"></div>
+                    <div class="cart-sidebar-content">
+                        <div class="cart-header">
+                            <h2>Your Cart</h2>
+                            <button class="close-cart-sidebar">×</button>
+                        </div>
+
+                        <div class="cart-items">
+                            <div class="cart-item">
+                                <div class="cart-item-image">
+                                    <img src="/restaurant_custom/static/src/img/s10.PNG" alt="Chicken Madbee"/>
+                                </div>
+                                <div class="cart-item-details">
+                                    <h4>Chicken Madbee</h4>
+                                    <p>(Regular)</p>
+                                    <span class="cart-item-price">Rs. 1699</span>
+                                </div>
+                                <div class="cart-item-controls">
+                                    <button class="cart-item-delete">🗑</button>
+                                    <div class="cart-quantity-controls">
+                                        <button class="cart-qty-minus">-</button>
+                                        <span class="cart-item-qty">1</span>
+                                        <button class="cart-qty-plus">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cart-suggestions">
+                            <h3>+ Add more items</h3>
+                            <div class="cart-suggestion-text">Popular with your order</div>
+                            <div class="cart-suggestion-subtext">Customers often buy these together</div>
+
+                            <div class="suggestion-items">
+                                <div class="suggestion-item">
+                                    <div class="suggestion-item-content">
+                                        <span class="suggestion-price">Rs. 425</span>
+                                        <span class="suggestion-name">Kababjees Cho...</span>
+                                    </div>
+                                    <button class="suggestion-add">+</button>
+                                </div>
+                                <div class="suggestion-item">
+                                    <div class="suggestion-item-content">
+                                        <span class="suggestion-price">Rs. 185</span>
+                                        <span class="suggestion-name">Soft Drinks</span>
+                                    </div>
+                                    <button class="suggestion-add">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cart-footer">
+                            <div class="cart-tax">
+                                <span>Tax 15%</span>
+                                <span>Rs. 255</span>
+                            </div>
+                            <button class="checkout-btn">
+                                <span>Checkout</span>
+                                <span class="checkout-arrow">→</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </xpath>

@@ -14,6 +14,13 @@ function initializePopup() {
     const plusBtn = document.querySelector('.qty-btn.plus');
     const addToCartBtn = document.querySelector('.add-to-cart');
 
+    // NEW: Get cart elements
+    const bottomCartBar = document.querySelector('.bottom-cart-bar');
+    const viewCartBtn = document.querySelector('.view-cart-btn');
+    const cartSidebar = document.querySelector('.cart-sidebar');
+    const cartSidebarOverlay = document.querySelector('.cart-sidebar-overlay');
+    const closeCartSidebar = document.querySelector('.close-cart-sidebar');
+
     console.log("Elements found:", {
         menuCard: !!menuCard,
         popup: !!popup,
@@ -21,7 +28,10 @@ function initializePopup() {
         sizeOptions: sizeOptions.length,
         quantityElement: !!quantityElement,
         minusBtn: !!minusBtn,
-        plusBtn: !!plusBtn
+        plusBtn: !!plusBtn,
+        bottomCartBar: !!bottomCartBar,
+        viewCartBtn: !!viewCartBtn,
+        cartSidebar: !!cartSidebar
     });
 
     // Check if elements exist
@@ -35,6 +45,8 @@ function initializePopup() {
 
     let quantity = 1;
     let selectedPrice = 1699;
+    let cartItems = [];
+    let cartTotal = 0;
 
     // Remove any existing event listeners by cloning nodes
     const newMenuCard = menuCard.cloneNode(true);
@@ -139,6 +151,64 @@ function initializePopup() {
         });
     }
 
+    // NEW: Handle Add to Cart button click
+    if (addToCartBtn) {
+        addToCartBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log("Add to cart clicked");
+
+            // Get selected size
+            const selectedSize = document.querySelector('.size-option.active .size-text').textContent;
+            const specialInstructions = document.querySelector('.special-instructions textarea').value;
+
+            // Add item to cart
+            const cartItem = {
+                name: "Chicken Madbee",
+                size: selectedSize,
+                price: selectedPrice,
+                quantity: quantity,
+                instructions: specialInstructions,
+                image: "/restaurant_custom/static/src/img/s10.PNG"
+            };
+
+            addItemToCart(cartItem);
+
+            // Close popup
+            popup.style.display = 'none';
+            document.body.style.overflow = 'auto';
+
+            // Show bottom cart bar
+            showBottomCartBar();
+        });
+    }
+
+    // NEW: Handle View Cart button click
+    if (viewCartBtn) {
+        viewCartBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log("View cart clicked");
+            showCartSidebar();
+        });
+    }
+
+    // NEW: Handle cart sidebar close
+    if (closeCartSidebar) {
+        closeCartSidebar.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            hideCartSidebar();
+        });
+    }
+
+    // NEW: Handle cart sidebar overlay click
+    if (cartSidebarOverlay) {
+        cartSidebarOverlay.addEventListener('click', function(e) {
+            hideCartSidebar();
+        });
+    }
+
     // Update quantity display
     function updateQuantityDisplay() {
         if (quantityElement) {
@@ -154,6 +224,155 @@ function initializePopup() {
             if (span) {
                 span.textContent = `Rs. ${totalPrice} Add to Cart`;
             }
+        }
+    }
+
+    // NEW: Add item to cart function
+    function addItemToCart(item) {
+        // Check if item already exists in cart
+        const existingItemIndex = cartItems.findIndex(cartItem =>
+            cartItem.name === item.name && cartItem.size === item.size
+        );
+
+        if (existingItemIndex > -1) {
+            // Update existing item quantity
+            cartItems[existingItemIndex].quantity += item.quantity;
+        } else {
+            // Add new item to cart
+            cartItems.push(item);
+        }
+
+        updateCartDisplay();
+        console.log("Cart items:", cartItems);
+    }
+
+    // NEW: Update cart display
+    function updateCartDisplay() {
+        // Calculate total
+        cartTotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+        const tax = Math.round(cartTotal * 0.15);
+        const finalTotal = cartTotal + tax;
+
+        // Update bottom cart bar
+        const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+        const cartBadge = document.querySelector('.cart-count');
+        const cartTotalElement = document.querySelector('.cart-total');
+
+        if (cartBadge) cartBadge.textContent = cartCount;
+        if (cartTotalElement) cartTotalElement.textContent = `Rs. ${finalTotal}`;
+
+        // Update cart sidebar
+        updateCartSidebarDisplay();
+    }
+
+    // NEW: Update cart sidebar display
+    function updateCartSidebarDisplay() {
+        const cartItemsContainer = document.querySelector('.cart-items');
+        if (!cartItemsContainer) return;
+
+        cartItemsContainer.innerHTML = '';
+
+        cartItems.forEach((item, index) => {
+            const cartItemElement = document.createElement('div');
+            cartItemElement.className = 'cart-item';
+            cartItemElement.innerHTML = `
+                <div class="cart-item-image">
+                    <img src="${item.image}" alt="${item.name}"/>
+                </div>
+                <div class="cart-item-details">
+                    <h4>${item.name}</h4>
+                    <p>(${item.size})</p>
+                    <span class="cart-item-price">Rs. ${item.price}</span>
+                </div>
+                <div class="cart-item-controls">
+                    <button class="cart-item-delete" data-index="${index}">🗑</button>
+                    <div class="cart-quantity-controls">
+                        <button class="cart-qty-minus" data-index="${index}">-</button>
+                        <span class="cart-item-qty">${item.quantity}</span>
+                        <button class="cart-qty-plus" data-index="${index}">+</button>
+                    </div>
+                </div>
+            `;
+            cartItemsContainer.appendChild(cartItemElement);
+        });
+
+        // Add event listeners to cart item controls
+        addCartItemEventListeners();
+
+        // Update tax and total
+        const tax = Math.round(cartTotal * 0.15);
+        const cartTaxElement = document.querySelector('.cart-tax span:last-child');
+        if (cartTaxElement) cartTaxElement.textContent = `Rs. ${tax}`;
+    }
+
+    // NEW: Add event listeners to cart item controls
+    function addCartItemEventListeners() {
+        // Delete buttons
+        document.querySelectorAll('.cart-item-delete').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const index = parseInt(this.dataset.index);
+                cartItems.splice(index, 1);
+                updateCartDisplay();
+                if (cartItems.length === 0) {
+                    hideBottomCartBar();
+                    hideCartSidebar();
+                }
+            });
+        });
+
+        // Quantity minus buttons
+        document.querySelectorAll('.cart-qty-minus').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const index = parseInt(this.dataset.index);
+                if (cartItems[index].quantity > 1) {
+                    cartItems[index].quantity--;
+                    updateCartDisplay();
+                }
+            });
+        });
+
+        // Quantity plus buttons
+        document.querySelectorAll('.cart-qty-plus').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const index = parseInt(this.dataset.index);
+                cartItems[index].quantity++;
+                updateCartDisplay();
+            });
+        });
+    }
+
+    // NEW: Show bottom cart bar
+    function showBottomCartBar() {
+        if (bottomCartBar) {
+            bottomCartBar.style.display = 'block';
+        }
+    }
+
+    // NEW: Hide bottom cart bar
+    function hideBottomCartBar() {
+        if (bottomCartBar) {
+            bottomCartBar.style.display = 'none';
+        }
+    }
+
+    // NEW: Show cart sidebar
+    function showCartSidebar() {
+        if (cartSidebar) {
+            cartSidebar.style.display = 'block';
+            // Trigger animation
+            setTimeout(() => {
+                cartSidebar.classList.add('active');
+            }, 10);
+        }
+    }
+
+    // NEW: Hide cart sidebar
+    function hideCartSidebar() {
+        if (cartSidebar) {
+            cartSidebar.classList.remove('active');
+            setTimeout(() => {
+                cartSidebar.style.display = 'none';
+            }, 300);
         }
     }
 

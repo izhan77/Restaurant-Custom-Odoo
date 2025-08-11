@@ -42,6 +42,11 @@
     font-size: 18px;
 }
 
+.call-info:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
 .call-info .sub-text {
      color: black;
 }

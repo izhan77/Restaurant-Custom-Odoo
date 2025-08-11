@@ -19,13 +19,16 @@
                         </a>
 
                         <!-- Call Info -->
-                        <div class="call-info">
+                        <a href="tel:021111666111" class="call-info">
                             <i class="fa fa-mobile-alt text-danger"></i>
                             <div class="call-text">
                                 <span class="main-text">Call and Order</span>
-                                <span class="sub-text"><strong> 021111666111 </strong></span>
+                                <span class="sub-text">
+                                    <strong>021111666111</strong>
+                                </span>
                             </div>
-                        </div>
+                        </a>
+
 
                     </div>
 

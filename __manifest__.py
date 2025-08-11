@@ -7,6 +7,8 @@
     'data': [
         # 'views/assets.xml',
         'views/hero_section.xml',
+        'views/checkout_page.xml',
+
         # 'views/assets.xml',        # Removed to avoid website.assets_frontend inherit error
     ],
     'depends': ['website'],
@@ -15,6 +17,8 @@
             '/restaurant_custom/static/src/css/hero.css',
             '/restaurant_custom/static/src/js/hero.js',
             '/restaurant_custom/static/src/css/navbar.css',
+            '/restaurant_custom/static/src/css/checkout_style.css',
+
         ],
     },
     'installable': True,

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="error_page" name="Error Page">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="alert alert-danger">
+                    <h1>Error</h1>
+                    <p t-esc="error"/>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

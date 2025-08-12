@@ -1,13 +1,85 @@
 from odoo import http
-from odoo.http import request
+from odoo.http import request, Response
 import json
+from twilio.rest import Client
 import logging
-from werkzeug.exceptions import BadRequest
+# from werkzeug.exceptions import BadRequest
 
 _logger = logging.getLogger(__name__)
 
 
-class Kababjees(http.Controller):
+class KababjeesController(http.Controller):
+
+    @http.route('/test-sms', type='http', auth="public")
+    def test_sms(self, **kw):
+        try:
+            config = request.env['ir.config_parameter'].sudo()
+            account_sid = config.get_param('twilio.account_sid')
+            auth_token = config.get_param('twilio.auth_token')
+            twilio_number = config.get_param('twilio.twilio_number')
+
+            return f"""
+            <h1>Twilio Test</h1>
+            <p>Account SID: {'Configured' if account_sid else 'Missing'}</p>
+            <p>Auth Token: {'Configured' if auth_token else 'Missing'}</p>
+            <p>Twilio Number: {'Configured' if twilio_number else 'Missing'}</p>
+            """
+        except Exception as e:
+            return str(e)
+
+    @http.route('/kababjees/send_sms', type='json', auth="public", methods=['POST'], csrf=False)
+    def send_sms(self, **post):
+        _logger.info("SMS request received")
+        try:
+            # Get data from request
+            data = request.jsonrequest
+            _logger.debug("Request data: %s", data)
+            if not data:
+                return {'success': False, 'error': 'No data received'}
+
+            phone = data.get('phone')
+            message = data.get('message')
+
+            if not phone or not message:
+                return {
+                    'success': False,
+                    'error': 'Phone and message are required'
+                }
+
+            # Get Twilio credentials
+            config = request.env['ir.config_parameter'].sudo()
+            account_sid = config.get_param('twilio.account_sid')
+            auth_token = config.get_param('twilio.auth_token')
+            twilio_number = config.get_param('twilio.twilio_number')
+
+            if not all([account_sid, auth_token, twilio_number]):
+                return {
+                    'success': False,
+                    'error': 'Twilio not configured'
+                }
+
+            # Initialize Twilio client
+            client = Client(account_sid, auth_token)
+
+            # Send SMS
+            message = client.messages.create(
+                body=message,
+                from_=twilio_number,
+                to=phone
+            )
+
+            return {
+                'success': True,
+                'sid': message.sid,
+                'status': message.status
+            }
+
+        except Exception as e:
+            _logger.error("SMS sending failed: %s", str(e))
+            return {
+                'success': False,
+                'error': str(e)
+            }
 
     @http.route('/', type='http', auth='public', website=True)
     def index(self, **kw):
@@ -391,3 +463,5 @@ class Kababjees(http.Controller):
         # In a real implementation, integrate with payment gateway
         _logger.info(f"Processing payment of {amount} with card ending in {card_data.get('number', '')[-4:]}")
         return True  # Simulate successful payment
+
+

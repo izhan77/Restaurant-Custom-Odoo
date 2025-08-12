@@ -2,8 +2,6 @@
 <odoo>
     <!-- Add checkout page template to your existing hero_section_template -->
     <template id="hero_section_template" name="Hero Section" inherit_id="website.layout">
-        <!-- Remove default header -->
-        <xpath expr="//header" position="replace"/>
 
         <!-- Set body background -->
         <xpath expr="//body" position="attributes">
@@ -254,7 +252,8 @@
                                             <label for="phone">Phone Number *</label>
                                             <div class="phone-input">
                                                 <div class="country-code">🇵🇰 +92</div>
-                                                <input type="tel" id="phone" name="phone" placeholder="3001234567" required=""/>
+                                                <input type="tel" id="phone" name="phone" placeholder="3001234567"
+                                                       required=""/>
                                             </div>
                                         </div>
                                     </div>
@@ -262,7 +261,8 @@
                                     <div class="form-row">
                                         <div class="form-group" style="grid-column: 1 / -1;">
                                             <label for="email">Email Address</label>
-                                            <input type="email" id="email" name="email" placeholder="example@email.com"/>
+                                            <input type="email" id="email" name="email"
+                                                   placeholder="example@email.com"/>
                                         </div>
                                     </div>
                                 </section>
@@ -275,14 +275,18 @@
                                         <i class="fa fa-motorcycle"></i>
                                         <div class="delivery-info-text">
                                             <h4>Delivery Available</h4>
-                                            <p>We'll deliver your order to your doorstep. Delivery charges may apply based on your location.</p>
+                                            <p>We'll deliver your order to your doorstep. Delivery charges may apply
+                                                based on your location.
+                                            </p>
                                         </div>
                                     </div>
 
                                     <div class="form-row">
                                         <div class="form-group" style="grid-column: 1 / -1;">
                                             <label for="address">Delivery Address *</label>
-                                            <textarea id="address" name="address" placeholder="Enter your complete address including area, street, house number" required=""></textarea>
+                                            <textarea id="address" name="address"
+                                                      placeholder="Enter your complete address including area, street, house number"
+                                                      required=""></textarea>
                                         </div>
                                     </div>
                                 </section>
@@ -291,7 +295,8 @@
                                 <section class="special-instructions-section">
                                     <h2 class="section-title">Special Instructions</h2>
                                     <div class="form-group">
-                                        <textarea id="instructions" name="instructions" placeholder="Any special instructions for your order (e.g., extra spicy, no onions, etc.)"></textarea>
+                                        <textarea id="instructions" name="instructions"
+                                                  placeholder="Any special instructions for your order (e.g., extra spicy, no onions, etc.)"></textarea>
                                     </div>
                                 </section>
 
@@ -322,29 +327,35 @@
                                         <h3>Card Information</h3>
 
                                         <div class="card-icons">
-                                            <img src="https://cdnjs.cloudflare.com/ajax/libs/payment-icons/1.2.5/visa.svg" alt="Visa" class="card-icon"/>
-                                            <img src="https://cdnjs.cloudflare.com/ajax/libs/payment-icons/1.2.5/mastercard.svg" alt="Mastercard" class="card-icon"/>
+                                            <img src="https://cdnjs.cloudflare.com/ajax/libs/payment-icons/1.2.5/visa.svg"
+                                                 alt="Visa" class="card-icon"/>
+                                            <img src="https://cdnjs.cloudflare.com/ajax/libs/payment-icons/1.2.5/mastercard.svg"
+                                                 alt="Mastercard" class="card-icon"/>
                                         </div>
 
                                         <div class="form-row">
                                             <div class="form-group" style="grid-column: 1 / -1;">
                                                 <label for="cardNumber">Card Number *</label>
-                                                <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19"/>
+                                                <input type="text" id="cardNumber" name="cardNumber"
+                                                       placeholder="1234 5678 9012 3456" maxlength="19"/>
                                             </div>
                                         </div>
 
                                         <div class="form-row">
                                             <div class="form-group">
                                                 <label for="cardName">Cardholder Name *</label>
-                                                <input type="text" id="cardName" name="cardName" placeholder="John Doe"/>
+                                                <input type="text" id="cardName" name="cardName"
+                                                       placeholder="John Doe"/>
                                             </div>
                                             <div class="form-group">
                                                 <label for="expiryDate">Expiry Date *</label>
-                                                <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" maxlength="5"/>
+                                                <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY"
+                                                       maxlength="5"/>
                                             </div>
                                             <div class="form-group cvv-input">
                                                 <label for="cvv">CVV *</label>
-                                                <input type="password" id="cvv" name="cvv" placeholder="123" maxlength="4"/>
+                                                <input type="password" id="cvv" name="cvv" placeholder="123"
+                                                       maxlength="4"/>
                                                 <i class="fa fa-eye cvv-toggle" onclick="toggleCVV()"></i>
                                             </div>
                                         </div>
@@ -426,7 +437,8 @@
 
                                         <div class="suggestion-slider">
                                             <div class="suggestion-card">
-                                                <img src="/restaurant_custom/static/src/img/s10.PNG" alt="Chicken Cheese Burger"/>
+                                                <img src="/restaurant_custom/static/src/img/s10.PNG"
+                                                     alt="Chicken Cheese Burger"/>
                                                 <div class="suggestion-info">
                                                     <div class="suggestion-badges">
                                                         <span class="badge new">New</span>
@@ -437,7 +449,8 @@
                                                 </div>
                                             </div>
                                             <div class="suggestion-card">
-                                                <img src="/restaurant_custom/static/src/img/s10.PNG" alt="Beef Seekh Kabab"/>
+                                                <img src="/restaurant_custom/static/src/img/s10.PNG"
+                                                     alt="Beef Seekh Kabab"/>
                                                 <div class="suggestion-info">
                                                     <div class="suggestion-badges">
                                                         <span class="badge new-flavor">New Flavor</span>

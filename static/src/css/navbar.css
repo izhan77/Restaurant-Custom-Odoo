@@ -1,9 +1,28 @@
+/* ========================= */
+/* NAVBAR CONTAINER */
+/* ========================= */
 .topbar-container {
+    background-color: #fff;
     padding: 8px 0;
     border-bottom: 1px solid #ddd;
     position: relative;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
+.container.d-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ========================= */
+/* LEFT SECTION */
+/* ========================= */
 .topbar-left {
     display: flex;
     align-items: center;
@@ -23,6 +42,14 @@
     gap: 8px;
     text-decoration: none;
     white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.topbar-btn.location-btn:hover {
+    background-color: #c51a1f;
+    transform: translateY(-1px);
+    text-decoration: none;
+    color: white;
 }
 
 .topbar-btn.location-btn i {
@@ -35,14 +62,17 @@
     align-items: center;
     gap: 8px;
     color: inherit;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.call-info:hover {
+    color: #e31e24;
+    text-decoration: none;
 }
 
 .call-info i {
     font-size: 18px;
-}
-
-.call-info .sub-text {
-     color: black;
 }
 
 .location-text,
@@ -60,9 +90,16 @@
 .sub-text {
     font-size: 12px;
     font-weight: 400;
-    color: #fff; /* white text inside red button */
+    color: #fff;
 }
 
+.call-info .sub-text {
+    color: #333;
+}
+
+/* ========================= */
+/* CENTER LOGO */
+/* ========================= */
 .topbar-logo {
     position: absolute;
     left: 50%;
@@ -71,8 +108,16 @@
 
 .topbar-logo img {
     height: 40px;
+    transition: all 0.3s ease;
 }
 
+.topbar-logo img:hover {
+    opacity: 0.9;
+}
+
+/* ========================= */
+/* RIGHT SECTION */
+/* ========================= */
 .topbar-right {
     display: flex;
     align-items: center;
@@ -90,16 +135,260 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
+    transition: all 0.3s ease;
+}
+
+.topbar-right a:hover {
+    background-color: #c51a1f;
+    transform: translateY(-1px);
+    text-decoration: none;
+    color: white;
 }
 
 .topbar-right i {
     font-size: 20px;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
+.fa-shopping-cart,
+.cart-icon {
+    font-size: 22px;
+    color: #333;
+    margin-left: 8px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.fa-shopping-cart:hover,
+.cart-icon:hover {
+    color: #e31e24;
+}
+
+/* Menu Toggle Button (Hamburger) */
 .menu-toggle {
     background: none;
     border: none;
-    font-size: 20px;
+    font-size: 24px;
     cursor: pointer;
+    margin-left: 8px;
+    color: #333;
+    transition: all 0.3s ease;
+    padding: 8px;
+    display: none;
+    border-radius: 4px;
+}
+
+.menu-toggle:hover,
+.menu-toggle:focus {
+    color: #e31e24;
+    background-color: rgba(227, 30, 36, 0.1);
+    outline: none;
+}
+
+.menu-toggle:active {
+    transform: scale(0.95);
+}
+
+/* ========================= */
+/* MOBILE MENU STYLES */
+/* ========================= */
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    left: -100%; /* Start completely off-screen */
+    width: 85%;
+    max-width: 300px;
+    height: 100vh;
+    background: white;
+    z-index: 99999999999999; /* Extremely high z-index */
+    transition: left 0.3s ease-out;
+    overflow-y: auto;
+    box-shadow: 2px 0 15px rgba(0,0,0,0.2);
+}
+
+.mobile-menu.menu-open {
+    left: 0;
+}
+
+.mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 99998;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-overlay.overlay-active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Force disable scrolling when menu is open */
+body.menu-open-no-scroll {
+    overflow: hidden !important;
+    position: fixed !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Add this to ensure smooth transitions */
+.mobile-menu,
+.mobile-menu-overlay {
+    will-change: transform, opacity;
+}
+
+/* Ensure body scroll lock works properly */
+html.menu-open,
+body.menu-open {
+    overflow: hidden;
+    height: 100%;
+    position: fixed;
+    width: 100%;
+}
+
+.mobile-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    background: #f9f9f9;
+    min-height: 60px;
+}
+
+.mobile-menu-logo {
+    height: 35px;
+    max-width: 120px;
+    object-fit: contain;
+}
+
+.mobile-menu-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #333;
+    cursor: pointer;
+    padding: 8px;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-close:hover,
+.mobile-menu-close:focus {
+    color: #e31e24;
+    outline: none;
+}
+
+.mobile-menu-content {
+    padding: 0;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.mobile-menu-item {
+    display: flex;
+    align-items: center;
+    padding: 18px 25px;
+    color: #333;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    border-bottom: 1px solid #f5f5f5;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-item:hover,
+.mobile-menu-item:focus {
+    background: #f9f9f9;
+    color: #e31e24;
+    text-decoration: none;
+    outline: none;
+}
+
+.mobile-menu-item i {
+    margin-right: 15px;
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+    color: #e31e24;
+}
+
+.mobile-menu-footer {
+    padding: 25px 20px;
+    text-align: center;
+    background: #f9f9f9;
+    border-top: 1px solid #eee;
+}
+
+.mobile-social-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #333;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover,
+.social-link:focus {
+    background: #e31e24;
+    color: white;
+    text-decoration: none;
+    outline: none;
+}
+
+.mobile-copyright {
+    font-size: 12px;
+    color: #777;
+    margin-top: 10px;
+}
+
+/* ========================= */
+/* BODY SCROLL LOCK */
+/* ========================= */
+body.menu-open {
+    overflow: hidden;
+}
+
+/* ========================= */
+/* RESPONSIVE STYLES */
+/* ========================= */
+@media (max-width: 768px) {
+    .desktop-only {
+        display: none !important;
+    }
+
+    .menu-toggle {
+        display: inline-block !important;
+    }
+
+    .topbar-logo {
+        position: static;
+        transform: none;
+        margin-right: auto;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-menu,
+    .mobile-menu-overlay {
+        display: none !important;
+    }
 }

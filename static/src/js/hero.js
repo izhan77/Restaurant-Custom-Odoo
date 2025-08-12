@@ -878,74 +878,54 @@ function initializePopup() {
     }
 
     // NEW: Actual SMS sending function (replace with your real API)
-async function sendSMSNotification(orderData) {
+    // Modify the sendSMS function to provide better error messages
+async function sendSMS(phone, message) {
     try {
-        const message = `🍽️ Kababjees Order Confirmed!\n\nOrder ID: #${orderData.orderId}\nTotal: Rs. ${orderData.totals.grandTotal.toLocaleString()}\nDelivery: 30-45 mins\n\nThank you for choosing Kababjees!`;
-
-        // Replace with your actual SMS API integration
-        // Example using TextLocal (you'll need an account and API key)
-        const response = await fetch('https://api.textlocal.in/send/', {
+        const response = await fetch('/kababjees/send_sms', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/json',
             },
-            body: new URLSearchParams({
-                apikey: 'YOUR_API_KEY_HERE', // Replace with your actual API key
-                numbers: `92${orderData.customer.phone}`, // Pakistan numbers with country code
-                message: message,
-                sender: 'Kababjees'
+            body: JSON.stringify({
+                phone: phone,
+                message: message
             })
         });
 
-        const result = await response.json();
-
-        if (result.status === 'success') {
-            console.log('SMS sent successfully:', result);
-            return { success: true, message: 'SMS sent successfully' };
-        } else {
-            console.error('SMS sending failed:', result.errors);
-            return {
-                success: false,
-                error: result.errors ? result.errors[0].message : 'Unknown error'
-            };
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
         }
 
+        return await response.json();
     } catch (error) {
-        console.error('SMS sending failed:', error);
+        console.error('SMS Error:', error);
         return {
             success: false,
-            error: error.message
+            error: error.message || 'Failed to send SMS'
         };
     }
 }
 
     // Process order with proper state management
-async function processOrder() {
+    async function processOrder() {
     console.log("Processing order...");
 
-    // Show loading state
     const placeOrderBtn = document.querySelector('.place-order-btn');
     if (!placeOrderBtn) return;
 
-    // Check if already processing to prevent multiple submissions
-    if (placeOrderBtn.dataset.processing === 'true') {
-        console.log('Order already being processed');
-        return;
-    }
-
-    // Set processing flag
+    // Prevent multiple submissions
+    if (placeOrderBtn.dataset.processing === 'true') return;
     placeOrderBtn.dataset.processing = 'true';
+
     const originalText = placeOrderBtn.innerHTML;
     placeOrderBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing Order...';
     placeOrderBtn.disabled = true;
 
     try {
-        // Generate order ID
-        const orderId = 'KB' + Date.now().toString().slice(-6);
-
-        // Collect order data
+        // Generate order data
         const orderData = {
-            orderId: orderId,
+            orderId: 'KB' + Date.now().toString().slice(-6),
             customer: {
                 firstName: document.getElementById('firstName').value,
                 lastName: document.getElementById('lastName').value,
@@ -953,30 +933,32 @@ async function processOrder() {
                 email: document.getElementById('email').value || '',
                 address: document.getElementById('address').value
             },
-            items: [...cartItems], // Create a copy of cart items
+            items: [...cartItems],
             payment: {
-                method: document.querySelector('.payment-option.active').dataset.method,
+                method: document.querySelector('.payment-option.active').dataset.method
             },
-            instructions: document.getElementById('instructions').value || '',
             totals: {
                 subtotal: cartTotal,
                 deliveryFee: 150,
                 tax: Math.round(cartTotal * 0.15),
-                discount: 0,
                 grandTotal: cartTotal + 150 + Math.round(cartTotal * 0.15)
-            },
-            timestamp: new Date().toISOString()
+            }
         };
 
-        console.log("Order data:", orderData);
+        // Format phone number for Twilio
+        const phone = document.getElementById('phone').value;
+        const formattedPhone = `+92${phone.replace(/\D/g, '')}`;
+        const message = `🍽️ Kababjees Order Confirmed!\nOrder #${orderData.orderId}\nTotal: Rs. ${orderData.totals.grandTotal.toLocaleString()}\nDelivery: 30-45 mins`;
 
-        // Simulate API call with timeout
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        // Send SMS via Odoo endpoint
+        const smsResult = await sendSMS(formattedPhone, message);
 
-        // Send SMS notification
-        const smsResult = await sendSMSNotification(orderData);
+        if (!smsResult.success) {
+            console.error('SMS failed:', smsResult.error);
+            showNotification('Order placed but SMS failed: ' + smsResult.error, 'warning');
+        }
 
-        // Show success popup
+        // Show success UI
         showSuccessPopup(orderData);
 
         // Clear cart
@@ -986,16 +968,19 @@ async function processOrder() {
         hideCheckoutPage();
         hideBottomCartBar();
 
-        // Show SMS status
-        if (!smsResult.success) {
-            showNotification('Order placed successfully, but SMS notification failed', 'warning');
-        }
-
     } catch (error) {
         console.error('Order processing error:', error);
-        showNotification('Order processing failed. Please try again.', 'error');
+        let errorMsg = 'Order processing failed. ';
+
+        if (error.message.includes('404')) {
+            errorMsg += 'Server configuration error (SMS endpoint not found)';
+        } else {
+            errorMsg += error.message;
+        }
+
+        showNotification(errorMsg, 'error');
     } finally {
-        // Always reset button state
+        // Reset button state
         placeOrderBtn.innerHTML = originalText;
         placeOrderBtn.disabled = false;
         delete placeOrderBtn.dataset.processing;

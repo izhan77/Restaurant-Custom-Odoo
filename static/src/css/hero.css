@@ -2541,6 +2541,370 @@ input[type="checkbox"] {
     }
 }
 
+/* ============= SUCCESS POPUP STYLES - ADD TO END OF YOUR CSS FILE ============= */
+
+/* Success Popup Overlay */
+.success-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 20000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.success-popup-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Success Popup Container */
+.success-popup {
+    background: white;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    transform: scale(0.9) translateY(30px);
+    transition: all 0.3s ease;
+}
+
+.success-popup-overlay.show .success-popup {
+    transform: scale(1) translateY(0);
+}
+
+/* Success Popup Header */
+.success-popup-header {
+    text-align: center;
+    padding: 40px 30px 20px;
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    border-radius: 20px 20px 0 0;
+    color: white;
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    animation: successPulse 0.6s ease-out;
+}
+
+@keyframes successPulse {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.success-icon i {
+    font-size: 40px;
+    color: #4CAF50;
+}
+
+.success-popup-header h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0 0 8px 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.success-popup-header p {
+    font-size: 16px;
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* Success Popup Body */
+.success-popup-body {
+    padding: 30px;
+}
+
+.order-summary-success {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+    border: 2px solid #e9ecef;
+}
+
+.order-id {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: linear-gradient(135deg, #ff0000, #e60000);
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(255, 0, 0, 0.2);
+}
+
+.order-id strong {
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+.order-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 15px;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-row span:first-child {
+    color: #666;
+    font-weight: 500;
+}
+
+.detail-row span:last-child {
+    color: #333;
+    font-weight: 600;
+}
+
+.total-amount {
+    color: #ff0000 !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+}
+
+/* Success Actions */
+.success-actions {
+    margin-bottom: 25px;
+}
+
+.success-message {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    background: #e8f5e8;
+    border: 1px solid #c8e6c9;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #2e7d32;
+}
+
+.success-message:last-child {
+    margin-bottom: 0;
+}
+
+.success-message i {
+    font-size: 18px;
+    color: #4caf50;
+}
+
+/* Success Popup Footer */
+.success-popup-footer {
+    padding: 0 30px 30px;
+    display: flex;
+    gap: 15px;
+}
+
+.continue-shopping-btn,
+.track-order-btn {
+    flex: 1;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.continue-shopping-btn {
+    background: #ff0000;
+    color: white;
+}
+
+.continue-shopping-btn:hover {
+    background: #e60000;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 0, 0, 0.3);
+}
+
+.track-order-btn {
+    background: #f8f9fa;
+    color: #333;
+    border: 2px solid #e9ecef;
+}
+
+.track-order-btn:hover {
+    background: #e9ecef;
+    border-color: #dee2e6;
+    transform: translateY(-2px);
+}
+
+/* ============= NOTIFICATION STYLES - ADD AFTER SUCCESS POPUP STYLES ============= */
+
+/* Notification System */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    border-radius: 12px;
+    padding: 16px 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    z-index: 25000;
+    min-width: 300px;
+    max-width: 400px;
+    transform: translateX(420px);
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    border-left: 4px solid #ddd;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification.success {
+    border-left-color: #4caf50;
+}
+
+.notification.error {
+    border-left-color: #f44336;
+}
+
+.notification.warning {
+    border-left-color: #ff9800;
+}
+
+.notification.info {
+    border-left-color: #2196f3;
+}
+
+.notification-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.notification-icon {
+    font-size: 18px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.notification.success .notification-icon {
+    color: #4caf50;
+}
+
+.notification.error .notification-icon {
+    color: #f44336;
+}
+
+.notification.warning .notification-icon {
+    color: #ff9800;
+}
+
+.notification.info .notification-icon {
+    color: #2196f3;
+}
+
+.notification-message {
+    font-size: 14px;
+    line-height: 1.4;
+    color: #333;
+    white-space: pre-line;
+}
+
+/* Responsive Design for Success Popup */
+@media (max-width: 768px) {
+    .success-popup {
+        margin: 10px;
+        border-radius: 15px;
+    }
+
+    .success-popup-header {
+        padding: 30px 20px 15px;
+        border-radius: 15px 15px 0 0;
+    }
+
+    .success-icon {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 15px;
+    }
+
+    .success-icon i {
+        font-size: 35px;
+    }
+
+    .success-popup-header h2 {
+        font-size: 24px;
+    }
+
+    .success-popup-body {
+        padding: 20px;
+    }
+
+    .order-summary-success {
+        padding: 20px;
+    }
+
+    .success-popup-footer {
+        padding: 0 20px 20px;
+        flex-direction: column;
+    }
+
+    .continue-shopping-btn,
+    .track-order-btn {
+        width: 100%;
+    }
+
+    .notification {
+        right: 10px;
+        left: 10px;
+        min-width: auto;
+        max-width: none;
+        transform: translateY(-100px);
+    }
+
+    .notification.show {
+        transform: translateY(0);
+    }
+}
+
 
 
 

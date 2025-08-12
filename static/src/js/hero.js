@@ -21,7 +21,7 @@ function initializePopup() {
     const cartSidebarOverlay = document.querySelector('.cart-sidebar-overlay');
     const closeCartSidebar = document.querySelector('.close-cart-sidebar');
 
-    // NEW: Checkout elements
+    // Checkout elements
     const checkoutPage = document.querySelector('.checkout-page');
     const checkoutBtn = document.querySelector('.checkout-btn');
     const backToMenuBtn = document.querySelector('.back-to-menu');
@@ -218,7 +218,7 @@ function initializePopup() {
         });
     }
 
-    // NEW: Handle checkout button click
+    // Handle checkout button click
     if (checkoutBtn) {
         checkoutBtn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -228,7 +228,7 @@ function initializePopup() {
         });
     }
 
-    // NEW: Handle back to menu button
+    // Handle back to menu button
     if (backToMenuBtn) {
         backToMenuBtn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -238,7 +238,7 @@ function initializePopup() {
         });
     }
 
-    // NEW: Handle add more items button
+    // Handle add more items button
     if (addMoreItemsBtn) {
         addMoreItemsBtn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -253,7 +253,7 @@ function initializePopup() {
         });
     }
 
-    // NEW: Handle cancel and return button
+    // Handle cancel and return button
     if (cancelReturnBtn) {
         cancelReturnBtn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -363,7 +363,7 @@ function initializePopup() {
         if (cartTaxElement) cartTaxElement.textContent = `Rs. ${tax}`;
     }
 
-    // NEW: Update checkout display
+    // Update checkout display
     function updateCheckoutDisplay() {
         const checkoutCartItems = document.querySelector('.checkout-cart-items');
         if (!checkoutCartItems) return;
@@ -475,7 +475,7 @@ function initializePopup() {
         }
     }
 
-    // NEW: Show checkout page
+    // Show checkout page
     function showCheckoutPage() {
         if (checkoutPage && cartItems.length > 0) {
             // Hide cart sidebar first
@@ -498,7 +498,7 @@ function initializePopup() {
         }
     }
 
-    // NEW: Hide checkout page
+    // Hide checkout page
     function hideCheckoutPage() {
         if (checkoutPage) {
             checkoutPage.classList.remove('active');
@@ -510,7 +510,7 @@ function initializePopup() {
         }
     }
 
-    // NEW: Initialize checkout-specific features
+    // Initialize checkout-specific features
     function initializeCheckoutFeatures() {
         console.log("Initializing checkout features");
 
@@ -583,7 +583,7 @@ function initializePopup() {
                     // For demo, let's apply a 10% discount
                     applyPromoDiscount(promoCode);
                 } else {
-                    alert('Please enter a promo code');
+                    showNotification('Please enter a promo code', 'error');
                 }
             });
         }
@@ -614,7 +614,7 @@ function initializePopup() {
         });
     }
 
-    // NEW: Apply promo discount
+    // Apply promo discount
     function applyPromoDiscount(promoCode) {
         // Demo promo codes
         const promoCodes = {
@@ -667,11 +667,11 @@ function initializePopup() {
                 promoInput.style.borderColor = '#ddd';
             }, 2000);
 
-            alert('Invalid promo code');
+            showNotification('Invalid promo code', 'error');
         }
     }
 
-    // NEW: Update grand total
+    // Update grand total
     function updateGrandTotal() {
         const subtotal = cartTotal;
         const deliveryFee = 150;
@@ -692,7 +692,7 @@ function initializePopup() {
         }
     }
 
-    // NEW: Validate checkout form
+    // Validate checkout form
     function validateCheckoutForm() {
         const requiredFields = [
             'firstName',
@@ -753,24 +753,199 @@ function initializePopup() {
         }
 
         if (!isValid) {
-            alert('Please fill in all required fields:\n\n' + errors.join('\n'));
+            showNotification('Please fill in all required fields:\n\n' + errors.join('\n'), 'error');
         }
 
         return isValid;
     }
 
-    // NEW: Process order
-    function processOrder() {
-        console.log("Processing order...");
+    // NEW: Show notification function
+    function showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
 
-        // Show loading state
-        const placeOrderBtn = document.querySelector('.place-order-btn');
-        const originalText = placeOrderBtn.innerHTML;
-        placeOrderBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing Order...';
-        placeOrderBtn.disabled = true;
+        const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+
+        notification.innerHTML = `
+            <div class="notification-content">
+                <span class="notification-icon">${icon}</span>
+                <span class="notification-message">${message}</span>
+            </div>
+        `;
+
+        // Add to page
+        document.body.appendChild(notification);
+
+        // Show animation
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 100);
+
+        // Auto remove after 4 seconds
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 4000);
+    }
+
+    // NEW: Success popup function
+    function showSuccessPopup(orderData) {
+        // Create success popup
+        const successPopup = document.createElement('div');
+        successPopup.className = 'success-popup-overlay';
+
+        successPopup.innerHTML = `
+            <div class="success-popup">
+                <div class="success-popup-header">
+                    <div class="success-icon">
+                        <i class="fa fa-check-circle"></i>
+                    </div>
+                    <h2>Order Successful!</h2>
+                    <p>Thank you for your order</p>
+                </div>
+
+                <div class="success-popup-body">
+                    <div class="order-summary-success">
+                        <div class="order-id">
+                            <strong>Order ID: #${orderData.orderId}</strong>
+                        </div>
+
+                        <div class="order-details">
+                            <div class="detail-row">
+                                <span>Customer:</span>
+                                <span>${orderData.customer.firstName} ${orderData.customer.lastName}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Phone:</span>
+                                <span>+92 ${orderData.customer.phone}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Total Amount:</span>
+                                <span class="total-amount">Rs. ${orderData.totals.grandTotal.toLocaleString()}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Payment Method:</span>
+                                <span>${orderData.payment.method === 'cash' ? 'Cash on Delivery' : 'Card Payment'}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Estimated Delivery:</span>
+                                <span>30-45 minutes</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="success-actions">
+                        <p class="success-message">
+                            <i class="fa fa-phone"></i>
+                            You will receive a confirmation call shortly
+                        </p>
+                        <p class="success-message">
+                            <i class="fa fa-sms"></i>
+                            SMS confirmation sent to your number
+                        </p>
+                    </div>
+                </div>
+
+                <div class="success-popup-footer">
+                    <button class="continue-shopping-btn" onclick="closeSuccessPopup()">
+                        <i class="fa fa-shopping-bag"></i>
+                        Continue Shopping
+                    </button>
+                    <button class="track-order-btn">
+                        <i class="fa fa-map-marker-alt"></i>
+                        Track Order
+                    </button>
+                </div>
+            </div>
+        `;
+
+        // Add to page
+        document.body.appendChild(successPopup);
+
+        // Show animation
+        setTimeout(() => {
+            successPopup.classList.add('show');
+        }, 100);
+
+        // Add event listeners
+        const trackOrderBtn = successPopup.querySelector('.track-order-btn');
+        trackOrderBtn.addEventListener('click', function() {
+            showNotification('Order tracking will be available shortly!', 'info');
+        });
+    }
+
+    // NEW: Actual SMS sending function (replace with your real API)
+async function sendSMSNotification(orderData) {
+    try {
+        const message = `🍽️ Kababjees Order Confirmed!\n\nOrder ID: #${orderData.orderId}\nTotal: Rs. ${orderData.totals.grandTotal.toLocaleString()}\nDelivery: 30-45 mins\n\nThank you for choosing Kababjees!`;
+
+        // Replace with your actual SMS API integration
+        // Example using TextLocal (you'll need an account and API key)
+        const response = await fetch('https://api.textlocal.in/send/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                apikey: 'YOUR_API_KEY_HERE', // Replace with your actual API key
+                numbers: `92${orderData.customer.phone}`, // Pakistan numbers with country code
+                message: message,
+                sender: 'Kababjees'
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.status === 'success') {
+            console.log('SMS sent successfully:', result);
+            return { success: true, message: 'SMS sent successfully' };
+        } else {
+            console.error('SMS sending failed:', result.errors);
+            return {
+                success: false,
+                error: result.errors ? result.errors[0].message : 'Unknown error'
+            };
+        }
+
+    } catch (error) {
+        console.error('SMS sending failed:', error);
+        return {
+            success: false,
+            error: error.message
+        };
+    }
+}
+
+    // Process order with proper state management
+async function processOrder() {
+    console.log("Processing order...");
+
+    // Show loading state
+    const placeOrderBtn = document.querySelector('.place-order-btn');
+    if (!placeOrderBtn) return;
+
+    // Check if already processing to prevent multiple submissions
+    if (placeOrderBtn.dataset.processing === 'true') {
+        console.log('Order already being processed');
+        return;
+    }
+
+    // Set processing flag
+    placeOrderBtn.dataset.processing = 'true';
+    const originalText = placeOrderBtn.innerHTML;
+    placeOrderBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing Order...';
+    placeOrderBtn.disabled = true;
+
+    try {
+        // Generate order ID
+        const orderId = 'KB' + Date.now().toString().slice(-6);
 
         // Collect order data
         const orderData = {
+            orderId: orderId,
             customer: {
                 firstName: document.getElementById('firstName').value,
                 lastName: document.getElementById('lastName').value,
@@ -778,7 +953,7 @@ function initializePopup() {
                 email: document.getElementById('email').value || '',
                 address: document.getElementById('address').value
             },
-            items: cartItems,
+            items: [...cartItems], // Create a copy of cart items
             payment: {
                 method: document.querySelector('.payment-option.active').dataset.method,
             },
@@ -787,43 +962,58 @@ function initializePopup() {
                 subtotal: cartTotal,
                 deliveryFee: 150,
                 tax: Math.round(cartTotal * 0.15),
-                discount: 0, // Calculate from discount if applied
+                discount: 0,
                 grandTotal: cartTotal + 150 + Math.round(cartTotal * 0.15)
             },
             timestamp: new Date().toISOString()
         };
 
-        // If card payment, add card details (in real app, this would be tokenized)
-        if (orderData.payment.method === 'card') {
-            orderData.payment.cardDetails = {
-                lastFour: document.getElementById('cardNumber').value.slice(-4),
-                cardholderName: document.getElementById('cardName').value,
-                // Never store full card details in real application
-            };
-        }
-
         console.log("Order data:", orderData);
 
-        // Simulate API call
-        setTimeout(() => {
-            // Reset button
-            placeOrderBtn.innerHTML = originalText;
-            placeOrderBtn.disabled = false;
+        // Simulate API call with timeout
+        await new Promise(resolve => setTimeout(resolve, 2000));
 
-            // Show success message
-            alert('🎉 Order placed successfully!\n\nOrder ID: #KB' + Date.now().toString().slice(-6) + '\n\nYou will receive a confirmation call shortly.');
+        // Send SMS notification
+        const smsResult = await sendSMSNotification(orderData);
 
-            // Clear cart and return to menu
-            cartItems = [];
-            cartTotal = 0;
-            updateCartDisplay();
-            hideCheckoutPage();
-            hideBottomCartBar();
+        // Show success popup
+        showSuccessPopup(orderData);
 
-        }, 2000);
+        // Clear cart
+        cartItems = [];
+        cartTotal = 0;
+        updateCartDisplay();
+        hideCheckoutPage();
+        hideBottomCartBar();
+
+        // Show SMS status
+        if (!smsResult.success) {
+            showNotification('Order placed successfully, but SMS notification failed', 'warning');
+        }
+
+    } catch (error) {
+        console.error('Order processing error:', error);
+        showNotification('Order processing failed. Please try again.', 'error');
+    } finally {
+        // Always reset button state
+        placeOrderBtn.innerHTML = originalText;
+        placeOrderBtn.disabled = false;
+        delete placeOrderBtn.dataset.processing;
     }
+}
 
     console.log("Event listeners attached successfully!");
+}
+
+// Global function to close success popup
+function closeSuccessPopup() {
+    const successPopup = document.querySelector('.success-popup-overlay');
+    if (successPopup) {
+        successPopup.classList.remove('show');
+        setTimeout(() => {
+            document.body.removeChild(successPopup);
+        }, 300);
+    }
 }
 
 // CVV toggle function (global scope)
@@ -831,14 +1021,16 @@ function toggleCVV() {
     const cvvInput = document.getElementById('cvv');
     const cvvToggle = document.querySelector('.cvv-toggle');
 
-    if (cvvInput.type === 'password') {
-        cvvInput.type = 'text';
-        cvvToggle.classList.remove('fa-eye');
-        cvvToggle.classList.add('fa-eye-slash');
-    } else {
-        cvvInput.type = 'password';
-        cvvToggle.classList.remove('fa-eye-slash');
-        cvvToggle.classList.add('fa-eye');
+    if (cvvInput && cvvToggle) {
+        if (cvvInput.type === 'password') {
+            cvvInput.type = 'text';
+            cvvToggle.classList.remove('fa-eye');
+            cvvToggle.classList.add('fa-eye-slash');
+        } else {
+            cvvInput.type = 'password';
+            cvvToggle.classList.remove('fa-eye-slash');
+            cvvToggle.classList.add('fa-eye');
+        }
     }
 }
 

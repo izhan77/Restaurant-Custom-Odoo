@@ -1,5 +1,4 @@
 .topbar-container {
-    background-color: #fff;
     padding: 8px 0;
     border-bottom: 1px solid #ddd;
     position: relative;
@@ -40,11 +39,6 @@
 
 .call-info i {
     font-size: 18px;
-}
-
-.call-info:hover {
-    text-decoration: none;
-    color: inherit;
 }
 
 .call-info .sub-text {

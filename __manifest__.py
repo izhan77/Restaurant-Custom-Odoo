@@ -5,7 +5,6 @@
     'license': 'LGPL-3',
     'version': '1.0',
     'data': [
-        # 'views/assets.xml',
         'views/hero_section.xml',
         'views/checkout_page.xml',
 
@@ -17,8 +16,6 @@
             '/restaurant_custom/static/src/css/hero.css',
             '/restaurant_custom/static/src/js/hero.js',
             '/restaurant_custom/static/src/css/navbar.css',
-            '/restaurant_custom/static/src/css/checkout_style.css',
-
         ],
     },
     'installable': True,

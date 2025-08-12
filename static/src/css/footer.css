@@ -1,0 +1,110 @@
+.custom-footer {
+            background-color: #ffffff;
+            padding: 2rem 1rem;
+            font-family: Arial, sans-serif;
+            color: #333333;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-top {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-brand h1 {
+            font-size: 1.8rem;
+            color: #222222;
+            margin: 0;
+        }
+
+        .footer-info, .footer-contact {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .info-header, .contact-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .footer-info h3,
+        .footer-contact h3,
+        .footer-app h3 {
+            font-size: 1.2rem;
+            color: #444444;
+            margin: 0;
+        }
+
+        .footer-info p,
+        .footer-contact p {
+            color: #666666;
+            margin: 0;
+            padding-left: 1.7rem;
+        }
+
+        .footer-divider {
+            height: 1px;
+            background-color: #e0e0e0;
+            margin: 1.5rem 0;
+        }
+
+        .footer-app {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .footer-app p {
+            color: #666666;
+            margin: 0.5rem 0 1rem;
+        }
+
+        .app-download {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .app-download strong {
+            font-size: 0.9rem;
+            color: #444444;
+        }
+
+        .google-play-badge {
+            height: 40px;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: #888888;
+        }
+
+        @media (max-width: 768px) {
+            .footer-top {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .footer-info p,
+            .footer-contact p {
+                padding-left: 0;
+            }
+        }

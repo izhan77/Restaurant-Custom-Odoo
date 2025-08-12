@@ -1,8 +1,8 @@
-console.log("Custom JS loaded!");
+console.log("Enhanced Custom JS with Checkout loaded!");
 
-// Function to initialize popup functionality
+// Function to initialize popup and checkout functionality
 function initializePopup() {
-    console.log("Trying to initialize popup functionality");
+    console.log("Trying to initialize popup and checkout functionality");
 
     // Get elements
     const menuCard = document.querySelector('.single-menu-card');
@@ -14,12 +14,19 @@ function initializePopup() {
     const plusBtn = document.querySelector('.qty-btn.plus');
     const addToCartBtn = document.querySelector('.add-to-cart');
 
-    // NEW: Get cart elements
+    // Cart elements
     const bottomCartBar = document.querySelector('.bottom-cart-bar');
     const viewCartBtn = document.querySelector('.view-cart-btn');
     const cartSidebar = document.querySelector('.cart-sidebar');
     const cartSidebarOverlay = document.querySelector('.cart-sidebar-overlay');
     const closeCartSidebar = document.querySelector('.close-cart-sidebar');
+
+    // Checkout elements
+    const checkoutPage = document.querySelector('.checkout-page');
+    const checkoutBtn = document.querySelector('.checkout-btn');
+    const backToMenuBtn = document.querySelector('.back-to-menu');
+    const addMoreItemsBtn = document.querySelector('.add-more-items');
+    const cancelReturnBtn = document.querySelector('.cancel-return-btn');
 
     console.log("Elements found:", {
         menuCard: !!menuCard,
@@ -31,10 +38,12 @@ function initializePopup() {
         plusBtn: !!plusBtn,
         bottomCartBar: !!bottomCartBar,
         viewCartBtn: !!viewCartBtn,
-        cartSidebar: !!cartSidebar
+        cartSidebar: !!cartSidebar,
+        checkoutPage: !!checkoutPage,
+        checkoutBtn: !!checkoutBtn
     });
 
-    // Check if elements exist
+    // Check if required elements exist
     if (!menuCard || !popup || !closeBtn) {
         console.error("Required elements not found, retrying in 500ms...");
         setTimeout(initializePopup, 500);
@@ -151,7 +160,7 @@ function initializePopup() {
         });
     }
 
-    // NEW: Handle Add to Cart button click
+    // Handle Add to Cart button click
     if (addToCartBtn) {
         addToCartBtn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -183,7 +192,7 @@ function initializePopup() {
         });
     }
 
-    // NEW: Handle View Cart button click
+    // Handle View Cart button click
     if (viewCartBtn) {
         viewCartBtn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -193,7 +202,7 @@ function initializePopup() {
         });
     }
 
-    // NEW: Handle cart sidebar close
+    // Handle cart sidebar close
     if (closeCartSidebar) {
         closeCartSidebar.addEventListener('click', function(e) {
             e.preventDefault();
@@ -202,10 +211,55 @@ function initializePopup() {
         });
     }
 
-    // NEW: Handle cart sidebar overlay click
+    // Handle cart sidebar overlay click
     if (cartSidebarOverlay) {
         cartSidebarOverlay.addEventListener('click', function(e) {
             hideCartSidebar();
+        });
+    }
+
+    // Handle checkout button click
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log("Checkout button clicked");
+            showCheckoutPage();
+        });
+    }
+
+    // Handle back to menu button
+    if (backToMenuBtn) {
+        backToMenuBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log("Back to menu clicked");
+            hideCheckoutPage();
+        });
+    }
+
+    // Handle add more items button
+    if (addMoreItemsBtn) {
+        addMoreItemsBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log("Add more items clicked");
+            hideCheckoutPage();
+            // Optionally scroll to menu section
+            const menuSection = document.querySelector('.popular-items');
+            if (menuSection) {
+                menuSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+
+    // Handle cancel and return button
+    if (cancelReturnBtn) {
+        cancelReturnBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log("Cancel and return clicked");
+            hideCheckoutPage();
         });
     }
 
@@ -227,7 +281,7 @@ function initializePopup() {
         }
     }
 
-    // NEW: Add item to cart function
+    // Add item to cart function
     function addItemToCart(item) {
         // Check if item already exists in cart
         const existingItemIndex = cartItems.findIndex(cartItem =>
@@ -246,12 +300,13 @@ function initializePopup() {
         console.log("Cart items:", cartItems);
     }
 
-    // NEW: Update cart display
+    // Update cart display
     function updateCartDisplay() {
         // Calculate total
         cartTotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
         const tax = Math.round(cartTotal * 0.15);
-        const finalTotal = cartTotal + tax;
+        const deliveryFee = cartItems.length > 0 ? 150 : 0;
+        const finalTotal = cartTotal + tax + deliveryFee;
 
         // Update bottom cart bar
         const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
@@ -263,9 +318,12 @@ function initializePopup() {
 
         // Update cart sidebar
         updateCartSidebarDisplay();
+
+        // Update checkout page if visible
+        updateCheckoutDisplay();
     }
 
-    // NEW: Update cart sidebar display
+    // Update cart sidebar display
     function updateCartSidebarDisplay() {
         const cartItemsContainer = document.querySelector('.cart-items');
         if (!cartItemsContainer) return;
@@ -305,7 +363,47 @@ function initializePopup() {
         if (cartTaxElement) cartTaxElement.textContent = `Rs. ${tax}`;
     }
 
-    // NEW: Add event listeners to cart item controls
+    // Update checkout display
+    function updateCheckoutDisplay() {
+        const checkoutCartItems = document.querySelector('.checkout-cart-items');
+        if (!checkoutCartItems) return;
+
+        checkoutCartItems.innerHTML = '';
+
+        cartItems.forEach((item, index) => {
+            const checkoutItemElement = document.createElement('div');
+            checkoutItemElement.className = 'checkout-cart-item';
+            checkoutItemElement.innerHTML = `
+                <div class="checkout-item-image">
+                    <img src="${item.image}" alt="${item.name}"/>
+                </div>
+                <div class="checkout-item-details">
+                    <div class="checkout-item-name">${item.name}</div>
+                    <div class="checkout-item-size">${item.size}</div>
+                    <div class="checkout-item-price">Rs. ${item.price}</div>
+                </div>
+                <div class="checkout-item-quantity">×${item.quantity}</div>
+            `;
+            checkoutCartItems.appendChild(checkoutItemElement);
+        });
+
+        // Update totals in checkout
+        const subtotalAmount = document.querySelector('.subtotal-amount');
+        const deliveryAmount = document.querySelector('.delivery-amount');
+        const taxAmount = document.querySelector('.tax-amount');
+        const grandTotalAmount = document.querySelector('.grand-total-amount');
+
+        const deliveryFee = cartItems.length > 0 ? 150 : 0;
+        const tax = Math.round(cartTotal * 0.15);
+        const grandTotal = cartTotal + deliveryFee + tax;
+
+        if (subtotalAmount) subtotalAmount.textContent = `Rs. ${cartTotal.toLocaleString()}`;
+        if (deliveryAmount) deliveryAmount.textContent = `Rs. ${deliveryFee}`;
+        if (taxAmount) taxAmount.textContent = `Rs. ${tax}`;
+        if (grandTotalAmount) grandTotalAmount.textContent = `Rs. ${grandTotal.toLocaleString()}`;
+    }
+
+    // Add event listeners to cart item controls
     function addCartItemEventListeners() {
         // Delete buttons
         document.querySelectorAll('.cart-item-delete').forEach(btn => {
@@ -316,6 +414,7 @@ function initializePopup() {
                 if (cartItems.length === 0) {
                     hideBottomCartBar();
                     hideCartSidebar();
+                    hideCheckoutPage();
                 }
             });
         });
@@ -341,21 +440,21 @@ function initializePopup() {
         });
     }
 
-    // NEW: Show bottom cart bar
+    // Show bottom cart bar
     function showBottomCartBar() {
         if (bottomCartBar) {
             bottomCartBar.style.display = 'block';
         }
     }
 
-    // NEW: Hide bottom cart bar
+    // Hide bottom cart bar
     function hideBottomCartBar() {
         if (bottomCartBar) {
             bottomCartBar.style.display = 'none';
         }
     }
 
-    // NEW: Show cart sidebar
+    // Show cart sidebar
     function showCartSidebar() {
         if (cartSidebar) {
             cartSidebar.style.display = 'block';
@@ -366,7 +465,7 @@ function initializePopup() {
         }
     }
 
-    // NEW: Hide cart sidebar
+    // Hide cart sidebar
     function hideCartSidebar() {
         if (cartSidebar) {
             cartSidebar.classList.remove('active');
@@ -376,7 +475,563 @@ function initializePopup() {
         }
     }
 
+    // Show checkout page
+    function showCheckoutPage() {
+        if (checkoutPage && cartItems.length > 0) {
+            // Hide cart sidebar first
+            hideCartSidebar();
+
+            // Update checkout display with current cart
+            updateCheckoutDisplay();
+
+            // Show checkout page
+            checkoutPage.style.display = 'block';
+            checkoutPage.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Initialize checkout functionality
+            initializeCheckoutFeatures();
+
+            console.log("Checkout page shown");
+        } else {
+            console.log("Cannot show checkout: no items in cart");
+        }
+    }
+
+    // Hide checkout page
+    function hideCheckoutPage() {
+        if (checkoutPage) {
+            checkoutPage.classList.remove('active');
+            setTimeout(() => {
+                checkoutPage.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }, 300);
+            console.log("Checkout page hidden");
+        }
+    }
+
+    // Initialize checkout-specific features
+    function initializeCheckoutFeatures() {
+        console.log("Initializing checkout features");
+
+        // Payment method selection
+        const paymentOptions = document.querySelectorAll('.payment-option');
+        const cardPaymentForm = document.querySelector('.card-payment-form');
+
+        paymentOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove active class from all options
+                paymentOptions.forEach(opt => opt.classList.remove('active'));
+
+                // Add active class to clicked option
+                this.classList.add('active');
+
+                // Show/hide card form based on selection
+                const method = this.dataset.method;
+                if (method === 'card') {
+                    cardPaymentForm.style.display = 'block';
+                    cardPaymentForm.classList.add('active');
+                } else {
+                    cardPaymentForm.style.display = 'none';
+                    cardPaymentForm.classList.remove('active');
+                }
+            });
+        });
+
+        // Card number formatting
+        const cardNumberInput = document.getElementById('cardNumber');
+        if (cardNumberInput) {
+            cardNumberInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+                e.target.value = value;
+            });
+        }
+
+        // Expiry date formatting
+        const expiryInput = document.getElementById('expiryDate');
+        if (expiryInput) {
+            expiryInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+                e.target.value = value;
+            });
+        }
+
+        // Phone number formatting
+        const phoneInput = document.getElementById('phone');
+        if (phoneInput) {
+            phoneInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                e.target.value = value;
+            });
+        }
+
+        // Promo code handling
+        const applyPromoBtn = document.querySelector('.apply-promo');
+        const promoInput = document.getElementById('promoCode');
+
+        if (applyPromoBtn) {
+            applyPromoBtn.addEventListener('click', function() {
+                const promoCode = promoInput.value.trim();
+                if (promoCode) {
+                    // Here you would typically validate the promo code
+                    console.log("Applying promo code:", promoCode);
+
+                    // For demo, let's apply a 10% discount
+                    applyPromoDiscount(promoCode);
+                } else {
+                    showNotification('Please enter a promo code', 'error');
+                }
+            });
+        }
+
+        // Place order button
+        const placeOrderBtn = document.querySelector('.place-order-btn');
+        if (placeOrderBtn) {
+            placeOrderBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Validate form
+                if (validateCheckoutForm()) {
+                    processOrder();
+                } else {
+                    console.log("Form validation failed");
+                }
+            });
+        }
+
+        // Suggestion cards click handlers
+        document.querySelectorAll('.suggestion-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Here you would add the suggested item to cart
+                console.log("Suggestion card clicked");
+                // For demo purposes, just log
+            });
+        });
+    }
+
+    // Apply promo discount
+    function applyPromoDiscount(promoCode) {
+        // Demo promo codes
+        const promoCodes = {
+            'SAVE10': 0.1,
+            'WELCOME': 0.15,
+            'NEWUSER': 0.2
+        };
+
+        const discount = promoCodes[promoCode.toUpperCase()];
+
+        if (discount) {
+            const discountAmount = Math.round(cartTotal * discount);
+
+            // Add discount line to totals
+            let discountLine = document.querySelector('.discount-line');
+            if (!discountLine) {
+                discountLine = document.createElement('div');
+                discountLine.className = 'total-line discount-line';
+                discountLine.innerHTML = `
+                    <span>Discount (${promoCode})</span>
+                    <span class="discount-amount" style="color: green;">-Rs. ${discountAmount}</span>
+                `;
+
+                // Insert before grand total
+                const grandTotalLine = document.querySelector('.total-line.grand-total');
+                grandTotalLine.parentNode.insertBefore(discountLine, grandTotalLine);
+            } else {
+                discountLine.querySelector('.discount-amount').textContent = `-Rs. ${discountAmount}`;
+            }
+
+            // Update grand total
+            updateGrandTotal();
+
+            // Show success message
+            const promoInput = document.getElementById('promoCode');
+            promoInput.style.borderColor = 'green';
+            promoInput.value = `${promoCode} applied ✓`;
+            promoInput.disabled = true;
+
+            const applyBtn = document.querySelector('.apply-promo');
+            applyBtn.textContent = 'Applied';
+            applyBtn.style.backgroundColor = 'green';
+            applyBtn.disabled = true;
+
+        } else {
+            // Show error
+            const promoInput = document.getElementById('promoCode');
+            promoInput.style.borderColor = 'red';
+            setTimeout(() => {
+                promoInput.style.borderColor = '#ddd';
+            }, 2000);
+
+            showNotification('Invalid promo code', 'error');
+        }
+    }
+
+    // Update grand total
+    function updateGrandTotal() {
+        const subtotal = cartTotal;
+        const deliveryFee = 150;
+        const tax = Math.round(cartTotal * 0.15);
+
+        // Get discount if any
+        const discountElement = document.querySelector('.discount-amount');
+        let discount = 0;
+        if (discountElement) {
+            discount = parseInt(discountElement.textContent.replace(/[^\d]/g, ''));
+        }
+
+        const grandTotal = subtotal + deliveryFee + tax - discount;
+
+        const grandTotalElement = document.querySelector('.grand-total-amount');
+        if (grandTotalElement) {
+            grandTotalElement.textContent = `Rs. ${grandTotal.toLocaleString()}`;
+        }
+    }
+
+    // Validate checkout form
+    function validateCheckoutForm() {
+        const requiredFields = [
+            'firstName',
+            'lastName',
+            'phone',
+            'address'
+        ];
+
+        let isValid = true;
+        const errors = [];
+
+        requiredFields.forEach(fieldName => {
+            const field = document.getElementById(fieldName);
+            if (field && !field.value.trim()) {
+                field.style.borderColor = 'red';
+                isValid = false;
+                errors.push(`${fieldName.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())} is required`);
+
+                // Reset border color after 3 seconds
+                setTimeout(() => {
+                    field.style.borderColor = '#ddd';
+                }, 3000);
+            }
+        });
+
+        // Validate phone number
+        const phoneField = document.getElementById('phone');
+        if (phoneField && phoneField.value.trim()) {
+            const phoneRegex = /^[0-9]{10}$/;
+            if (!phoneRegex.test(phoneField.value.replace(/\s/g, ''))) {
+                phoneField.style.borderColor = 'red';
+                isValid = false;
+                errors.push('Please enter a valid 10-digit phone number');
+
+                setTimeout(() => {
+                    phoneField.style.borderColor = '#ddd';
+                }, 3000);
+            }
+        }
+
+        // If card payment is selected, validate card fields
+        const cardPaymentForm = document.querySelector('.card-payment-form.active');
+        if (cardPaymentForm) {
+            const cardFields = ['cardNumber', 'cardName', 'expiryDate', 'cvv'];
+
+            cardFields.forEach(fieldName => {
+                const field = document.getElementById(fieldName);
+                if (field && !field.value.trim()) {
+                    field.style.borderColor = 'red';
+                    isValid = false;
+                    errors.push(`${fieldName.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())} is required`);
+
+                    setTimeout(() => {
+                        field.style.borderColor = '#ddd';
+                    }, 3000);
+                }
+            });
+        }
+
+        if (!isValid) {
+            showNotification('Please fill in all required fields:\n\n' + errors.join('\n'), 'error');
+        }
+
+        return isValid;
+    }
+
+    // NEW: Show notification function
+    function showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+
+        const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+
+        notification.innerHTML = `
+            <div class="notification-content">
+                <span class="notification-icon">${icon}</span>
+                <span class="notification-message">${message}</span>
+            </div>
+        `;
+
+        // Add to page
+        document.body.appendChild(notification);
+
+        // Show animation
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 100);
+
+        // Auto remove after 4 seconds
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 4000);
+    }
+
+    // NEW: Success popup function
+    function showSuccessPopup(orderData) {
+        // Create success popup
+        const successPopup = document.createElement('div');
+        successPopup.className = 'success-popup-overlay';
+
+        successPopup.innerHTML = `
+            <div class="success-popup">
+                <div class="success-popup-header">
+                    <div class="success-icon">
+                        <i class="fa fa-check-circle"></i>
+                    </div>
+                    <h2>Order Successful!</h2>
+                    <p>Thank you for your order</p>
+                </div>
+
+                <div class="success-popup-body">
+                    <div class="order-summary-success">
+                        <div class="order-id">
+                            <strong>Order ID: #${orderData.orderId}</strong>
+                        </div>
+
+                        <div class="order-details">
+                            <div class="detail-row">
+                                <span>Customer:</span>
+                                <span>${orderData.customer.firstName} ${orderData.customer.lastName}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Phone:</span>
+                                <span>+92 ${orderData.customer.phone}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Total Amount:</span>
+                                <span class="total-amount">Rs. ${orderData.totals.grandTotal.toLocaleString()}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Payment Method:</span>
+                                <span>${orderData.payment.method === 'cash' ? 'Cash on Delivery' : 'Card Payment'}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Estimated Delivery:</span>
+                                <span>30-45 minutes</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="success-actions">
+                        <p class="success-message">
+                            <i class="fa fa-phone"></i>
+                            You will receive a confirmation call shortly
+                        </p>
+                        <p class="success-message">
+                            <i class="fa fa-sms"></i>
+                            SMS confirmation sent to your number
+                        </p>
+                    </div>
+                </div>
+
+                <div class="success-popup-footer">
+                    <button class="continue-shopping-btn" onclick="closeSuccessPopup()">
+                        <i class="fa fa-shopping-bag"></i>
+                        Continue Shopping
+                    </button>
+                    <button class="track-order-btn">
+                        <i class="fa fa-map-marker-alt"></i>
+                        Track Order
+                    </button>
+                </div>
+            </div>
+        `;
+
+        // Add to page
+        document.body.appendChild(successPopup);
+
+        // Show animation
+        setTimeout(() => {
+            successPopup.classList.add('show');
+        }, 100);
+
+        // Add event listeners
+        const trackOrderBtn = successPopup.querySelector('.track-order-btn');
+        trackOrderBtn.addEventListener('click', function() {
+            showNotification('Order tracking will be available shortly!', 'info');
+        });
+    }
+
+    // NEW: Actual SMS sending function (replace with your real API)
+async function sendSMSNotification(orderData) {
+    try {
+        const message = `🍽️ Kababjees Order Confirmed!\n\nOrder ID: #${orderData.orderId}\nTotal: Rs. ${orderData.totals.grandTotal.toLocaleString()}\nDelivery: 30-45 mins\n\nThank you for choosing Kababjees!`;
+
+        // Replace with your actual SMS API integration
+        // Example using TextLocal (you'll need an account and API key)
+        const response = await fetch('https://api.textlocal.in/send/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                apikey: 'YOUR_API_KEY_HERE', // Replace with your actual API key
+                numbers: `92${orderData.customer.phone}`, // Pakistan numbers with country code
+                message: message,
+                sender: 'Kababjees'
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.status === 'success') {
+            console.log('SMS sent successfully:', result);
+            return { success: true, message: 'SMS sent successfully' };
+        } else {
+            console.error('SMS sending failed:', result.errors);
+            return {
+                success: false,
+                error: result.errors ? result.errors[0].message : 'Unknown error'
+            };
+        }
+
+    } catch (error) {
+        console.error('SMS sending failed:', error);
+        return {
+            success: false,
+            error: error.message
+        };
+    }
+}
+
+    // Process order with proper state management
+async function processOrder() {
+    console.log("Processing order...");
+
+    // Show loading state
+    const placeOrderBtn = document.querySelector('.place-order-btn');
+    if (!placeOrderBtn) return;
+
+    // Check if already processing to prevent multiple submissions
+    if (placeOrderBtn.dataset.processing === 'true') {
+        console.log('Order already being processed');
+        return;
+    }
+
+    // Set processing flag
+    placeOrderBtn.dataset.processing = 'true';
+    const originalText = placeOrderBtn.innerHTML;
+    placeOrderBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing Order...';
+    placeOrderBtn.disabled = true;
+
+    try {
+        // Generate order ID
+        const orderId = 'KB' + Date.now().toString().slice(-6);
+
+        // Collect order data
+        const orderData = {
+            orderId: orderId,
+            customer: {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value || '',
+                address: document.getElementById('address').value
+            },
+            items: [...cartItems], // Create a copy of cart items
+            payment: {
+                method: document.querySelector('.payment-option.active').dataset.method,
+            },
+            instructions: document.getElementById('instructions').value || '',
+            totals: {
+                subtotal: cartTotal,
+                deliveryFee: 150,
+                tax: Math.round(cartTotal * 0.15),
+                discount: 0,
+                grandTotal: cartTotal + 150 + Math.round(cartTotal * 0.15)
+            },
+            timestamp: new Date().toISOString()
+        };
+
+        console.log("Order data:", orderData);
+
+        // Simulate API call with timeout
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        // Send SMS notification
+        const smsResult = await sendSMSNotification(orderData);
+
+        // Show success popup
+        showSuccessPopup(orderData);
+
+        // Clear cart
+        cartItems = [];
+        cartTotal = 0;
+        updateCartDisplay();
+        hideCheckoutPage();
+        hideBottomCartBar();
+
+        // Show SMS status
+        if (!smsResult.success) {
+            showNotification('Order placed successfully, but SMS notification failed', 'warning');
+        }
+
+    } catch (error) {
+        console.error('Order processing error:', error);
+        showNotification('Order processing failed. Please try again.', 'error');
+    } finally {
+        // Always reset button state
+        placeOrderBtn.innerHTML = originalText;
+        placeOrderBtn.disabled = false;
+        delete placeOrderBtn.dataset.processing;
+    }
+}
+
     console.log("Event listeners attached successfully!");
+}
+
+// Global function to close success popup
+function closeSuccessPopup() {
+    const successPopup = document.querySelector('.success-popup-overlay');
+    if (successPopup) {
+        successPopup.classList.remove('show');
+        setTimeout(() => {
+            document.body.removeChild(successPopup);
+        }, 300);
+    }
+}
+
+// CVV toggle function (global scope)
+function toggleCVV() {
+    const cvvInput = document.getElementById('cvv');
+    const cvvToggle = document.querySelector('.cvv-toggle');
+
+    if (cvvInput && cvvToggle) {
+        if (cvvInput.type === 'password') {
+            cvvInput.type = 'text';
+            cvvToggle.classList.remove('fa-eye');
+            cvvToggle.classList.add('fa-eye-slash');
+        } else {
+            cvvInput.type = 'password';
+            cvvToggle.classList.remove('fa-eye-slash');
+            cvvToggle.classList.add('fa-eye');
+        }
+    }
 }
 
 // Try multiple initialization methods
@@ -391,6 +1046,6 @@ window.addEventListener('load', function() {
     setTimeout(initializePopup, 100);
 });
 
-// For Odoo, also try with a timeout
+// For Odoo, also try with timeouts
 setTimeout(initializePopup, 1000);
 setTimeout(initializePopup, 2000);

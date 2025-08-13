@@ -3,7 +3,87 @@
     <!-- Add checkout page template to your existing hero_section_template -->
     <template id="hero_section_template" name="Hero Section" inherit_id="website.layout">
         <!-- Remove default header -->
-        <xpath expr="//header" position="replace"/>
+        <xpath expr="//header" position="replace">
+            <header id="custom-navbar" class="topbar-container container-fluid py-2">
+                <!-- Desktop Navbar -->
+                <div class="desktop-navbar">
+                    <!-- Left: Location & Phone -->
+                    <div class="navbar-left">
+                        <button type="button" class="location-btn btn btn-primary rounded-04">
+                            <img src="/restaurant_custom/static/src/img/location-icon.png" width="30" height="40" alt="Location"/>
+                            <div class="location-text">
+                                <span class="change-branch-btn fw-bold">Change Location</span>
+                                <br/>
+                                <span class="current-branch">Abyssinia Lines</span>
+                            </div>
+                        </button>
+
+                        <a href="tel:021111666111" class="call-btn btn btn-primary rounded-04">
+                            <img src="/restaurant_custom/static/src/img/phone-icon.png" width="30" height="30" alt="Call"/>
+                            <div class="call-text">
+                                <span class="call-label">Call and Order</span>
+                                <span class="phone-number">021111666111</span>
+                            </div>
+                        </a>
+
+                        <button class="menu-toggle-btn btn btn-secondary mobile-only">
+                            <img src="/restaurant_custom/static/src/img/hamburger-icon.png" width="25" height="15" alt="Menu"/>
+                        </button>
+                    </div>
+
+                    <!-- Center: Logo -->
+                    <div class="navbar-center">
+                        <a href="/" class="logo-link">
+                            <img src="/restaurant_custom/static/src/img/logo.png" alt="Kababjees" class="logo-img"/>
+                        </a>
+                    </div>
+
+                    <!-- Right: Complaint, Cart, Menu Toggle -->
+                    <div class="navbar-right">
+                        <a href="https://feedback.kababjeesgroup.com/" target="_blank" class="submit-complaint-btn">
+                Submit Your Complaint
+                        </a>
+
+                        <div class="cart-icon">
+                            <button class="cart-btn">
+                                <img src="/restaurant_custom/static/src/img/cart-icon.png" width="29" height="23" alt="Cart"/>
+                                <span class="cart-badge">1</span>
+                            </button>
+                        </div>
+
+                        <button class="menu-toggle-btn desktop-menu">
+                            <img src="/restaurant_custom/static/src/img/hamburger-icon.png" width="25" height="15" alt="Menu"/>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile Navbar -->
+                <div class="mobile-navbar">
+                    <div class="mobile-logo">
+                        <a href="/" class="logo-link">
+                            <img src="/restaurant_custom/static/src/img/logo.png" alt="Kababjees" class="logo-img"/>
+                        </a>
+                    </div>
+
+                    <div class="mobile-icons">
+                        <button type="button" class="location-btn">
+                            <img src="/restaurant_custom/static/src/img/location-icon.png" width="28" height="28" alt="Location"/>
+                        </button>
+
+                        <a href="tel:021111666111" class="call-btn">
+                            <img src="/restaurant_custom/static/src/img/phone-icon.png" width="28" height="28" alt="Call"/>
+                        </a>
+
+                        <div class="cart-icon">
+                            <button class="cart-btn">
+                                <img src="/restaurant_custom/static/src/img/cart-icon.png" width="28" height="22" alt="Cart"/>
+                                <span class="cart-badge">1</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </xpath>
 
         <!-- Set body background -->
         <xpath expr="//body" position="attributes">

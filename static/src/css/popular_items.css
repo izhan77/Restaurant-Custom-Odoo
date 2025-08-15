@@ -1,0 +1,121 @@
+/* Container + header */
+.popular-items-section {
+  padding: 36px 0;
+  background: transparent;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.section-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 28px;
+  margin: 0 0 6px;
+}
+.fire-icon {
+  width: 28px;
+  height: 28px;
+}
+.subtitle {
+  margin: 0 0 18px;
+  color: #7a7a7a;
+  font-size: 14px;
+}
+
+/* Grid */
+.popular-items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 22px;
+  align-items: stretch;
+}
+
+/* Card */
+.custom-card {
+  border-radius: 20px;
+  overflow: hidden;
+  transform-origin: center top;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  will-change: transform;
+  aspect-ratio: 4 / 6; /* width : height */
+}
+
+.custom-card:hover {
+  transform: scale(1.05);
+  z-index: 20;
+  filter: saturate(1.03);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.custom-card .card-img {
+  border-radius: 20px;
+  object-fit: cover;
+  height: 100%;
+}
+
+.custom-card .card-img-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 30%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  border-radius: 15px;
+  padding: 15px;
+}
+
+.product-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.product-description {
+  font-size: 0.7rem;
+  margin: 3px 0;
+}
+
+.product-price {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.add-btn {
+  background: red;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  width: 38px;
+  height: 38px;
+  font-size: 18px;
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.add-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Responsive tweaks */
+@media (max-width: 900px) {
+  .section-header h2 {
+    font-size: 22px;
+  }
+}
+@media (max-width: 520px) {
+  .popular-items-grid {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 16px;
+  }
+  .add-btn {
+    width: 40px;
+    height: 40px;
+    right: 12px;
+    bottom: 12px;
+  }
+}
